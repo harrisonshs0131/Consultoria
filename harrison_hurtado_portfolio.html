@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harrison Hurtado · Economista & Analista de Datos</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1a2e45;
+    --navy-light: #243b55;
+    --teal: #1d9e75;
+    --teal-light: #5DCAA5;
+    --teal-pale: #E1F5EE;
+    --blue: #378ADD;
+    --blue-pale: #E6F1FB;
+    --purple-pale: #EEEDFE;
+    --purple: #534AB7;
+    --gold: #EF9F27;
+    --gold-pale: #FAEEDA;
+    --text: #f0f4f8;
+    --text-muted: #8da0b3;
+    --text-dim: #4e6070;
+    --border: rgba(255,255,255,0.08);
+    --card-bg: rgba(255,255,255,0.04);
+    --card-hover: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--navy);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(29,158,117,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29,158,117,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ambient glow */
+  body::after {
+    content: '';
+    position: fixed;
+    top: -200px;
+    left: -200px;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(circle, rgba(29,158,117,0.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    background: rgba(13,27,42,0.85);
+  }
+
+  nav .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--teal-light);
+    letter-spacing: 0.05em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 160px 0 80px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.1s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.2s forwards;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--teal-light);
+  }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 520px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.35s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.7s 0.5s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: var(--teal);
+    color: #fff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    transition: background 0.2s, transform 0.15s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover { background: #0F6E56; transform: translateY(-1px); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .btn-outline:hover { border-color: rgba(255,255,255,0.2); background: var(--card-bg); }
+
+  /* STATS */
+  .stats {
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 2rem;
+  }
+
+  .stat {
+    opacity: 0;
+    animation: fadeUp 0.6s forwards;
+  }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 400;
+    color: var(--teal-light);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+  }
+
+  /* SECTION */
+  .section {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--teal);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .filter-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+
+  .filter-btn.active {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: #fff;
+  }
+
+  /* CARDS */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    background: var(--card-hover);
+    border-color: rgba(29,158,117,0.3);
+    transform: translateY(-2px);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-bi { background: rgba(55,138,221,0.15); color: #85B7EB; border: 1px solid rgba(55,138,221,0.2); }
+  .tag-stats { background: rgba(29,158,117,0.15); color: var(--teal-light); border: 1px solid rgba(29,158,117,0.2); }
+  .tag-paper { background: rgba(83,74,183,0.15); color: #AFA9EC; border: 1px solid rgba(83,74,183,0.2); }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--text);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .tool-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+  }
+
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--teal-light);
+    text-decoration: none;
+    margin-top: 4px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .project-card:hover .card-link { opacity: 1; }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.85;
+    margin-bottom: 1rem;
+  }
+
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .skill-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .skill-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .skill-name { color: var(--text); }
+  .skill-pct { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--teal-light); }
+
+  .skill-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    background: var(--teal);
+    border-radius: 2px;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 4rem 0 6rem;
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  .contact-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .contact-text p {
+    font-size: 15px;
+    color: var(--text-muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .contact-link:hover { background: var(--card-hover); border-color: rgba(29,158,117,0.3); }
+
+  .contact-link-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-link-icon.linkedin { background: rgba(55,138,221,0.15); }
+  .contact-link-icon.email { background: rgba(29,158,117,0.15); }
+
+  .contact-link-info { flex: 1; }
+  .contact-link-label { font-size: 11px; color: var(--text-dim); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; }
+  .contact-link-value { font-size: 14px; color: var(--text); margin-top: 1px; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    text-align: center;
+  }
+
+  footer p {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 640px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero { padding: 120px 0 60px; }
+    .nav-links { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <span class="nav-logo">harrison.hurtado</span>
+    <ul class="nav-links">
+      <li><a href="#proyectos">Proyectos</a></li>
+      <li><a href="#sobre-mi">Sobre mí</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <p class="hero-label">Economista · Bogotá, Colombia</p>
+      <h1>Harrison<br><em>Hurtado</em></h1>
+      <p class="hero-desc">
+        Transformo datos económicos complejos en análisis claros, dashboards interactivos y papers de investigación que apoyan decisiones estratégicas.
+      </p>
+      <div class="hero-actions">
+        <a href="#proyectos" class="btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Ver proyectos
+        </a>
+        <a href="#contacto" class="btn-outline">Contáctame</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat reveal" style="animation-delay:0.1s">
+          <div class="stat-number">12+</div>
+          <div class="stat-label">Dashboards en Power BI</div>
+        </div>
+        <div class="stat reveal" style="animation-delay:0.2s">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">Análisis estadísticos</div>
+        </div>
+        <div class="stat reveal" style="animation-delay:0.3s">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Papers publicados</div>
+        </div>
+        <div class="stat reveal" style="animation-delay:0.4s">
+          <div class="stat-number">3+</div>
+          <div class="stat-label">Años de experiencia</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="proyectos">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">01 /</span>
+        <h2 class="section-title">Proyectos</h2>
+      </div>
+
+      <div class="filters reveal">
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="bi">Power BI</button>
+        <button class="filter-btn" data-filter="stats">Estadística</button>
+        <button class="filter-btn" data-filter="paper">Papers</button>
+      </div>
+
+      <div class="cards-grid" id="cards-grid">
+
+        <div class="project-card reveal" data-type="bi">
+          <div class="card-top">
+            <span class="tag tag-bi">Power BI</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Dashboard de ventas regionales</p>
+          <p class="card-desc">Visualización interactiva de KPIs de ventas por región con segmentación por producto y período. Incluye alertas de desempeño y proyecciones mensuales.</p>
+          <div class="card-tools">
+            <span class="tool-tag">DAX</span>
+            <span class="tool-tag">Power Query</span>
+            <span class="tool-tag">Excel</span>
+          </div>
+          <a href="#" class="card-link">Ver proyecto →</a>
+        </div>
+
+        <div class="project-card reveal" data-type="stats">
+          <div class="card-top">
+            <span class="tag tag-stats">Estadística</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Modelo de regresión de precios de vivienda</p>
+          <p class="card-desc">Análisis econométrico de factores determinantes del precio de vivienda en Colombia usando microdatos del DANE y modelos de datos de panel.</p>
+          <div class="card-tools">
+            <span class="tool-tag">R</span>
+            <span class="tool-tag">Econometría</span>
+            <span class="tool-tag">Panel data</span>
+          </div>
+          <a href="#" class="card-link">Ver proyecto →</a>
+        </div>
+
+        <div class="project-card reveal" data-type="bi">
+          <div class="card-top">
+            <span class="tag tag-bi">Power BI</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Seguimiento presupuestal sector público</p>
+          <p class="card-desc">Dashboard para monitoreo de ejecución presupuestal con alertas automáticas y proyecciones de cierre fiscal para entidades del orden nacional.</p>
+          <div class="card-tools">
+            <span class="tool-tag">DAX</span>
+            <span class="tool-tag">Power Query</span>
+            <span class="tool-tag">SQL</span>
+          </div>
+          <a href="#" class="card-link">Ver proyecto →</a>
+        </div>
+
+        <div class="project-card reveal" data-type="paper">
+          <div class="card-top">
+            <span class="tag tag-paper">Paper</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Informalidad laboral y crecimiento económico</p>
+          <p class="card-desc">Investigación sobre el efecto de la informalidad en el crecimiento del PIB en economías latinoamericanas 2010–2022, con modelo de efectos fijos.</p>
+          <div class="card-tools">
+            <span class="tool-tag">Macroeconomía</span>
+            <span class="tool-tag">Stata</span>
+            <span class="tool-tag">CEPAL</span>
+          </div>
+          <a href="#" class="card-link">Ver paper →</a>
+        </div>
+
+        <div class="project-card reveal" data-type="stats">
+          <div class="card-top">
+            <span class="tag tag-stats">Estadística</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Análisis de encuesta de satisfacción</p>
+          <p class="card-desc">Procesamiento y análisis multivariado de encuesta con 5.000 respuestas para identificar patrones de comportamiento y segmentos de usuarios.</p>
+          <div class="card-tools">
+            <span class="tool-tag">Python</span>
+            <span class="tool-tag">Clustering</span>
+            <span class="tool-tag">Pandas</span>
+          </div>
+          <a href="#" class="card-link">Ver proyecto →</a>
+        </div>
+
+        <div class="project-card reveal" data-type="paper">
+          <div class="card-top">
+            <span class="tag tag-paper">Paper</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </div>
+          <p class="card-title">Política monetaria y tipo de cambio</p>
+          <p class="card-desc">Estudio de los efectos de las decisiones del Banco de la República sobre el tipo de cambio COP/USD mediante modelos VAR estructurales.</p>
+          <div class="card-tools">
+            <span class="tool-tag">Series de tiempo</span>
+            <span class="tool-tag">VAR</span>
+            <span class="tool-tag">EViews</span>
+          </div>
+          <a href="#" class="card-link">Ver paper →</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sobre-mi">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-label">02 /</span>
+        <h2 class="section-title">Sobre mí</h2>
+      </div>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>Soy economista con enfoque en análisis de datos y visualización de información. Me especializo en convertir conjuntos de datos complejos en narrativas claras que facilitan la toma de decisiones.</p>
+          <p>Mi trabajo combina rigor econométrico con herramientas modernas de Business Intelligence, especialmente Power BI, para construir dashboards que comunican los datos con precisión y claridad.</p>
+          <p>También investigo temas de macroeconomía aplicada, mercado laboral y política fiscal en el contexto latinoamericano.</p>
+        </div>
+        <div class="skills-list reveal">
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">Power BI / DAX</span>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">Econometría / R</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">Python / Pandas</span>
+              <span class="skill-pct">78%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">SQL</span>
+              <span class="skill-pct">80%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-header">
+              <span class="skill-name">Investigación económica</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contacto">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-text reveal">
+          <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;">03 / Contacto</p>
+          <h2>¿Tienes un proyecto<br><em style="font-style:italic;color:var(--teal-light)">en mente?</em></h2>
+          <p>Estoy disponible para proyectos de análisis de datos, consultoría económica y desarrollo de dashboards. Escríbeme.</p>
+        </div>
+        <div class="contact-links reveal">
+          <a href="https://linkedin.com/in/harrisonhurtado" class="contact-link" target="_blank">
+            <div class="contact-link-icon linkedin">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#85B7EB"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </div>
+            <div class="contact-link-info">
+              <div class="contact-link-label">LinkedIn</div>
+              <div class="contact-link-value">Harrison Hurtado</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="mailto:harrison.hurtado@email.com" class="contact-link">
+            <div class="contact-link-icon email">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal-light)" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div class="contact-link-info">
+              <div class="contact-link-label">Correo</div>
+              <div class="contact-link-value">harrison.hurtado@email.com</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-dim)" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <p>© 2025 Harrison Hurtado · Economista & Analista de Datos · Bogotá, Colombia</p>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Skill bars
+  const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.skill-fill').forEach(fill => {
+          fill.style.width = fill.dataset.width + '%';
+        });
+        skillObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.skills-list').forEach(el => skillObserver.observe(el));
+
+  // Filters
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.type === filter) ? '' : 'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>
